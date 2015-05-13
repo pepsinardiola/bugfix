@@ -1,0 +1,147 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Agenda</title>
+	
+	<style>
+	body{
+		background: -webkit-linear-gradient(-45deg, rgba(216,225,231,1) 0%, rgba(242,246,248,1) 70%, rgba(224,239,249,1) 100%);
+	}
+
+	h1{
+		font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+		text-align:center;
+		margin-top:50px;
+	}
+
+	h2{
+		font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+		text-align: center;
+		margin-top: 63px;
+		color: #616161;
+	}
+	.input{
+		text-align: center;
+	}
+	.input #todo-input{
+		width: 276px;
+		height: 31px;
+		font-size: 24px;
+		font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+		border-radius: 2px;
+		border: 1px #BDBDBD solid;
+	}
+	input[type="submit"]{
+		margin:0px 1px;
+		padding:0px;
+		border:none;
+		background-color: #607D8B;
+		color: white;
+		font-size: 14px;
+		height:31px;
+		border-radius: 4px;
+		width:60px;
+		vertical-align:bottom;
+	}
+	.container {
+		margin-left: auto;
+		margin-right: auto;
+		width: 380px;
+	}
+	ul {
+		padding:0;
+		margin:0;
+
+	}
+	li {
+		list-style-type: none;
+		font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+		font-size: 23px;
+		height: 45px;
+		color: #666;
+	}
+
+	li a.delete {
+		background:#999;
+		color:#fff;
+		text-decoration:none;
+		float:right;
+		padding:2px 4px;
+		border-radius:5px;
+	}
+
+	li a.delete:hover {
+		background:#C22A00;
+	}
+
+	li input[type=checkbox]{
+		font-size: 24px;
+	}
+	
+	button{
+		display: block;
+		width: 125px;
+		line-height: 37px;
+		color: white;
+		font-size: 16px;
+		border: 0px;
+		font-weight: 700;
+		text-align: center;
+		border-radius: 5px;
+		background-color: #4CAF50;
+		margin-top: 30px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#recent{
+		font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+		height: 15px;
+		margin-bottom: 35px;
+		color: #666;
+	}
+	#recent li{
+		font-size: 14px;
+	}
+	#recent span{
+		float:right; 
+		text-decoration: underline;
+		margin-right:17px;
+	}
+	a{
+		color: inherit;
+	}
+	</style>
+	
+</head>
+<body>
+	<div class="top-head">
+		<h1>My Awesome Task Manager</h1>
+		<h2>THINGS TO DO</h2>
+	</div>
+	<div class="container">
+		<form action="/main/addTask/{{list_name}}" method="POST">
+			{% csrf_token %}
+			<div class="input">
+				<input id="todo-input" type="text" name="tname">
+				<input type="submit" value="Add">
+			</div>
+		</form>
+		<form id="task-list" action="/main/doit/{{list_name}}" method="POST">
+			{% csrf_token %}
+			<ul>
+				{% for task in tasks %}
+				<li>
+					<input id="item-{{task.name}}" name="done_state" value="{{task.name}}" type="checkbox">
+					<label for="item-{{task.name}}">{{task.name}}</label>
+					<a class="delete" href="/main/remove/{{task.name}}">&#10008;</a>
+				</li>
+				{% endfor %}
+			</ul>
+			<button type="submit">Done</button>
+			
+		</form>
+	</div>
+	
+	
+</body>
+</html>
