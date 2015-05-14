@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from agenda.models import List, Task
-# Create your views here.
+'''Showing Functions'''
 
 
 def main(request):
@@ -17,33 +17,36 @@ def each(request, list_name):
 def done(request):
     mydone = Task.objects.filter(isDone=True)
     return render(request, "done.html", {'mydone': mydone})
-
-
-def remove(request, task_name):
-    task = Task.objects.get(name=task_name)
-    task.delete()
-    return render(request, "list.html")
-
-
-def add_task(request, list_name):
-    myname = request.POST.get('tname')
-    task = Task.objects.create(name=myname, list=List.objects.create(name=list_name))
-    task.save()
-    return render(request, "list.html")
+'''Functionality Functions'''
 
 
 def add_list(request):
     myname = request.POST.get('lname')
     mylist = List.objects.create(name=myname)
     mylist.save()
-    return render(request, "main.html")
+    return redirect("/main/")
+
+
+def add_task(request, list_name):
+    myname = request.POST.get('tname')
+    task = Task.objects.create(name=myname, list=List.objects.get(name=list_name))
+    task.save()
+    return redirect("/main/"+str(list_name))
+
+
+def remove(request, task_name):
+    task = Task.objects.get(name=task_name)
+    name1 = task.list.name
+    task.delete()
+    return redirect("/main/"+str(name1))
 
 
 def doer(request, list_name):
-    mydones = request.POST.getlist('done_state')
-    for i in mydones:
-        print(i)
-        task = Task.objects.get(id=i)
-        task.isDone = True
-        task.save()
-    return render(request, "list.html")
+    mylist = List.objects.get(name=list_name)
+    tasks = Task.objects.filter(list=mylist)
+    print(request.POST)
+    for task in tasks:
+        if task.name in request.POST:
+            task.isDone=True
+            task.save()
+    return redirect("/main/"+str(list_name))

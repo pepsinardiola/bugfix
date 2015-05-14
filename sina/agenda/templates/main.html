@@ -59,7 +59,9 @@
 		font-size: 23px;
 		height: 45px;
 		color: #666;
+		text-align: center;
 	}
+
 
 	li a.delete {
 		background:#999;
@@ -109,14 +111,22 @@
 	}
 	a{
 		color: inherit;
+		text-decoration: none;
+	}
+	#mine{
+		color: #4CAF50;
+	}
+	label:hover
+	{	
+		cursor: pointer;
 	}
 	</style>
 	
 </head>
 <body>
 	<div class="top-head">
-		<h1>My Awesome Task Manager</h1>
-		<h2>THINGS TO DO</h2>
+		<h1>Sina Sharifi Task Manager</h1>
+		<h2>My Lists</h2>
 	</div>
 	<div class="container">
 		<form action="/main/addList" method="POST">
@@ -128,13 +138,13 @@
 		</form>
 		<form id="task-list">
 			<ul>
-				{% for list in lists %}
+				{% for l in lists %}
 				<li>
-					<a href="/main/{{list.name}}"><label>{{list.name}}</label></a>
+					<a href="/main/{{l.name}}"><label>{{l.name}}</label></a>
 				</li>
 				{% endfor %}
 			</ul>
-			<a href="/main/done">Done List</a>
+			<li><a href="/done"><label id="mine">Done Tasks</label></a></li>
 			
 		</form>
 	</div>

@@ -115,25 +115,25 @@
 </head>
 <body>
 	<div class="top-head">
-		<h1>My Awesome Task Manager</h1>
-		<h2>THINGS TO DO</h2>
+		<h1>Sina Sharifi Task Manager</h1>
+		<h2>{{list_name}} Tasks</h2>
 	</div>
 	<div class="container">
-		<form action="/main/addTask/{{list_name}}" method="POST">
+		<form action="/main/{{list_name}}/addTask" method="POST">
 			{% csrf_token %}
 			<div class="input">
 				<input id="todo-input" type="text" name="tname">
 				<input type="submit" value="Add">
 			</div>
 		</form>
-		<form id="task-list" action="/main/doit/{{list_name}}" method="POST">
+		<form id="task-list" action="/main/{{list_name}}/doit" method="POST">
 			{% csrf_token %}
 			<ul>
-				{% for task in tasks %}
+				{% for t in tasks %}
 				<li>
-					<input id="item-{{task.name}}" name="done_state" value="{{task.name}}" type="checkbox">
-					<label for="item-{{task.name}}">{{task.name}}</label>
-					<a class="delete" href="/main/remove/{{task.name}}">&#10008;</a>
+					<input id="{{t.name}}" name="{{t.name}}" value="{{t.name}}" type="checkbox">
+					<label for="{{t.name}}">{{t.name}}</label>
+					<a class="delete" href="/main/{{t.name}}/remove">&#10008;</a>
 				</li>
 				{% endfor %}
 			</ul>
